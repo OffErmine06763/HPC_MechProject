@@ -25,7 +25,7 @@ boundaryField
         type            zeroGradient;
     }
 
-    "(obstacle|sideWalls|inlet|outlet|bottom)"
+    "(building|sideWalls|inlet|outlet|bottom)"
     {
         type            nutkRoughWallFunction;
         Ks              uniform 100e-6;

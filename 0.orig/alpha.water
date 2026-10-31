@@ -20,7 +20,7 @@ internalField   uniform 0;
 
 boundaryField
 {
-    "(inlet|outlet|bottom|sideWalls|obstacle)"
+    "(inlet|outlet|bottom|sideWalls|building)"
     {
         type            zeroGradient;
     }

@@ -7,9 +7,14 @@ restore0Dir
 
 runApplication blockMesh
 
-# Define the building volume and remove it from the domain, naming it "obstacle"
-runApplication topoSet
-runApplication subsetMesh -overwrite c0 -patch obstacle
+## Define the building volume and remove it from the domain, naming it "obstacle"
+#runApplication topoSet
+#runApplication subsetMesh -overwrite c0 -patch obstacle
+
+# Use snappy to form the mesh around the building geometry
+runApplication surfaceCheck constant/triSurface/building.stl
+runApplication snappyHexMesh -overwrite
+runApplication checkMesh
 
 # Set the initial condition (water position and velocity)
 runApplication setFields

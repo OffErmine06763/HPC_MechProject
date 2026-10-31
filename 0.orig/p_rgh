@@ -52,7 +52,7 @@ boundaryField
         value           uniform 0;
     }
 
-    obstacle
+    building
     {
         type            fixedFluxPressure;
         phi             phiAbs;

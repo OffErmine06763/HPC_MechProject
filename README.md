@@ -7,16 +7,12 @@ This section summarizes the current configuration of the OpenFOAM simulation, in
 ### 1. Computational Domain and Mesh
 
 - **Domain** ([`blockMeshDict`](system/blockMeshDict?plain=1#L19-L30)):
-  $
-  [0,12] \times [0,2] \times [0,4]
-  $
+  $[0,12] \times [0,2] \times [0,4]$
   where $x$, $y$, and $z$ represent the streamwise, spanwise, and vertical directions, respectively.
 
 - **Mesh discretization** ([`blockMeshDict`](system/blockMeshDict?plain=1#L31-L35)):
   5 cells per unit length in each direction, resulting in a mesh of:
-  $
-  60 \times 10 \times 20 = 12\,000 \text{ cells}
-  $
+  $60 \times 10 \times 20 = 12\,000 \text{ cells}$
 
 ### 2. Boundary Patches
 
@@ -37,36 +33,25 @@ The computational domain is bounded by the following patches ([`blockMeshDict`](
 The initial water distribution is defined in [`setFieldsDict`](system/setFieldsDict?plain=1#L25-L34):
 
 - **Initial water region:**
-  $
-  [0,4] \times [0,2] \times [0,1]
-  $
+  $[0,4] \times [0,2] \times [0,1]$
   The water occupies the full domain width and is initially located near the inlet.
 
 - **Initial velocity:**
-  $
-  \mathbf{U}_0 = (5,0,0)\ \mathrm{m/s}
-  $
+  $\mathbf{U}_0 = (0.5,0,0)\ \mathrm{m/s}$
 
 The initial water velocity is directed along the positive $x$-axis, generating the incoming wave.
 
-#### Building Geometry
+### 4. Building Geometry
 
-The building is introduced by modifying the computational mesh:
+The building mesh is defined in [building.stl](constant/triSurface): it is a rectangular volume at $[6.5,7.5] \times [0.5,1.5] \times [0,3]$.  
+The domain mesh is updated using `snappyHexMesh`, for now simply removing the domain cells inside the building mesh.  
+The building surface is named `building`.
 
-1. [`topoSetDict`](system/topoSetDict?plain=1#L17-L37) defines a cell selection corresponding to the volume:
-   $
-   [6.5,7.5] \times [0.5,1.5] \times [0,3]
-   $
-
-2. [`Allrun`](Allrun#L10-L13) removes the selected cells from the mesh using `subsetMesh`.
-
-This creates an obstacle representing a building positioned downstream of the initial water region.
-
-### 4. Parallelization
+### 5. Parallelization
 
 The simulation is configured to run on **8 processors**, as specified in [`decomposeParDict`](system/decomposeParDict?plain=1#L17).
 
-### 5. Boundary Conditions
+### 6. Boundary Conditions
 
 The following boundary conditions are currently defined:
 
@@ -89,9 +74,8 @@ The following boundary conditions are currently defined:
 
 - **Initial field assignment:** `setFields` is an OpenFOAM utility used to initialize the simulation fields according to the regions and values specified in `setFieldsDict`.
 
-- **Building representation:** The building is currently modeled as an obstacle by removing the corresponding cells from the fluid mesh. No structural deformation or fluid–structure interaction (FSI) is currently considered. Also the removal isn't working properly
+- **Building representation:** The building is currently modeled as a fixed obstacle. No structural deformation or fluid–structure interaction (FSI) is currently considered.
 
 ## TODO
 
 - [ ] Investigate replacing `slip` with `symmetry` for the `sideWalls` patch and update the corresponding boundary conditions in the initial field files.
-- [ ] Fix the building geometry and verify that `topoSet` and `subsetMesh` generate the intended obstacle.

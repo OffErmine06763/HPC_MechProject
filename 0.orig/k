@@ -27,7 +27,7 @@ boundaryField
         value           $internalField;
     }
 
-    "(obstacle|inlet|outlet|sideWalls|bottom)"
+    "(building|inlet|outlet|sideWalls|bottom)"
     {
         type            kqRWallFunction;
         value           $internalField;
