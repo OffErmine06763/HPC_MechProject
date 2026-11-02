@@ -21,10 +21,37 @@ addLayers       false;
 
 geometry
 {
-    building.stl
+    building_separated.stl
     {
         type triSurfaceMesh;
         name building;
+        regions
+        {
+            front
+            {
+                name building_front;
+            }
+            back
+            {
+                name building_back;
+            }
+            left
+            {
+                name building_left;
+            }
+            right
+            {
+                name building_right;
+            }
+            bottom
+            {
+                name building_bottom;
+            }
+            top
+            {
+                name building_top;
+            }
+        }
     }
 }
 
@@ -41,11 +68,29 @@ castellatedMeshControls
     {
         building
         {
-            level (1 2);
+            level (0 0);
 
-            patchInfo
+            regions
             {
-                type wall;
+                front
+                {
+                    level (2 3);
+                    patchInfo
+                    {
+                        type wall;
+                        inGroups (building);
+                    }
+                }
+
+                "(back|left|right|bottom|top)"
+                {
+                    level (1 2);
+                    patchInfo
+                    {
+                        type wall;
+                        inGroups (building);
+                    }
+                }
             }
         }
     }

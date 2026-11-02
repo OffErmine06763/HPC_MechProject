@@ -52,7 +52,7 @@ boundaryField
         value           uniform 0;
     }
 
-    building
+    "(building_front|building_back|building_left|building_right|building_top)"
     {
         type            fixedFluxPressure;
         phi             phiAbs;

@@ -27,7 +27,7 @@ boundaryField
         value           $internalField;
     }
 
-    "(building|sideWalls|inlet|outlet|bottom)"
+    "(building_front|building_back|building_left|building_right|building_top|sideWalls|inlet|outlet|bottom)"
     {
         type            omegaWallFunction;
         value           $internalField;

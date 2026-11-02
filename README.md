@@ -43,9 +43,9 @@ The initial water velocity is directed along the positive $x$-axis, generating t
 
 ### 4. Building Geometry
 
-The building mesh is defined in [building.stl](constant/triSurface): it is a rectangular volume at $[6.5,7.5] \times [0.5,1.5] \times [0,3]$.  
-The domain mesh is updated using `snappyHexMesh`, for now simply removing the domain cells inside the building mesh.  
-The building surface is named `building`.
+The building mesh is defined in [building_separated.stl](constant/triSurface): it is a rectangular volume at $[6.5,7.5] \times [0.5,1.5] \times [0,3]$.  
+The domain mesh is updated using `snappyHexMesh`, for now simply removing the domain cells inside the building mesh and performing some refinement around it (more on the front).  
+The building faces are divided in 6 patches (`building_front`, `building_back`, `building_left`, `building_right`, `building_top`, `building_bottom`), grouped under `building`.
 
 ### 5. Parallelization
 
@@ -79,3 +79,7 @@ The following boundary conditions are currently defined:
 ## TODO
 
 - [ ] Investigate replacing `slip` with `symmetry` for the `sideWalls` patch and update the corresponding boundary conditions in the initial field files.
+
+FEniCS for structure simulation, preCICE for coupling
+
+solids4foam instead: keep the entire simulation inside OpenFOAM, easiest.
