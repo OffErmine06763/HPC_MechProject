@@ -55,23 +55,24 @@ maxDeltaT       1;
 
 functions
 {
-    buildingForces
+    buildingLoads
     {
-        type            forces;
-        libs            ("libforces.so");
+        type            buildingLoads;
 
-        patches         (building);
+        libs            ("libbuildingLoads.so");
 
-        p               p_rgh;
-        U               U;
+        patch           building_front;
 
-        rho             rhoInf;
-        rhoInf          1000;
+        // in the future
+        // patches (building_front building_back building_roof);
 
-        pRef            0;
+        pressureField   p;
 
-        CofR            (0 0 0);
+        // Execute at every timestep
+        executeControl  timeStep;
+        executeInterval 1;
 
+        // Write at every timestep
         writeControl    timeStep;
         writeInterval   1;
     }

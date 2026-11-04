@@ -1,5 +1,17 @@
 # HPSLME Project – Tsunami Simulation
 
+## Execution
+
+First compile the custom function object (see later)
+
+    cd src/buildingLoadExtractor
+    wmake libso
+    cd ../..
+
+Then run the simulation
+
+    ./Allrun
+
 ## Current Simulation Setup
 
 This section summarizes the current configuration of the OpenFOAM simulation, including the computational domain, mesh, boundary conditions, initial water distribution, and building geometry.
@@ -63,6 +75,12 @@ The following boundary conditions are currently defined:
 
 **Note:** The `slip` condition on `sideWalls` is intended to approximate lateral symmetry, since the lateral walls are not physical walls but rather artificial boundaries of the computational domain.
 
+### 7. Data Extraction
+
+Simulation state against the building faces is extracted using OpenFOAM function objects, so that the data extraction can be performed independently from the output of the whole simulation state. See [`controlDict`](system/controlDict?plain=1#L56-L80).
+
+We are using a custom function object (implemented [here](src/buildingLoadExtractor)) that takes a patch and for each mesh quad extracts the following fields: face id, center position, area, pressure and force acting on it.
+
 ---
 
 ## Notes
@@ -79,7 +97,3 @@ The following boundary conditions are currently defined:
 ## TODO
 
 - [ ] Investigate replacing `slip` with `symmetry` for the `sideWalls` patch and update the corresponding boundary conditions in the initial field files.
-
-FEniCS for structure simulation, preCICE for coupling
-
-solids4foam instead: keep the entire simulation inside OpenFOAM, easiest.

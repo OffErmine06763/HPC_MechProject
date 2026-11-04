@@ -1,0 +1,3 @@
+buildingLoads.cpp
+
+LIB = $(FOAM_USER_LIBBIN)/libbuildingLoads
