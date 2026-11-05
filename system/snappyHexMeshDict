@@ -74,7 +74,7 @@ castellatedMeshControls
             {
                 front
                 {
-                    level (2 3);
+                    level (0 0);
                     patchInfo
                     {
                         type wall;
@@ -84,7 +84,7 @@ castellatedMeshControls
 
                 "(back|left|right|bottom|top)"
                 {
-                    level (1 2);
+                    level (0 0);
                     patchInfo
                     {
                         type wall;

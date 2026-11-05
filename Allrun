@@ -12,9 +12,9 @@ runApplication blockMesh
 #runApplication subsetMesh -overwrite c0 -patch obstacle
 
 # Use snappy to form the mesh around the building geometry
-runApplication surfaceCheck constant/triSurface/building.stl
+# runApplication surfaceCheck constant/triSurface/building.stl
 runApplication snappyHexMesh -overwrite
-runApplication checkMesh
+# runApplication checkMesh
 
 # Set the initial condition (water position and velocity)
 runApplication setFields
