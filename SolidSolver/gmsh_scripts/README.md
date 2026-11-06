@@ -52,4 +52,4 @@ definition is needed in CalculiX if those intersections must transfer load.
 
 ## Building Mesh
 
-Move under `geometry/` the stl files produced by blender
+Move under `geometry/` the stl files produced by Blender
