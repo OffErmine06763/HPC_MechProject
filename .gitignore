@@ -4,3 +4,6 @@ processor*/
 log.*
 postProcessing/
 constant/polyMesh
+.venv/
+src/gmsh_scripts/__pycache__
+src/gmsh_scripts/output
