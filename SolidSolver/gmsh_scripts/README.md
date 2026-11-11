@@ -15,7 +15,7 @@ packages in the same Python environment:
 
 ```bash
 sudo apt install libgmsh-dev
-python -m pip install gmsh trimesh
+python -m pip install gmsh trimesh networkx
 ```
 
 On WSL might require a venv 

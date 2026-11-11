@@ -241,7 +241,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--geometry-dir", type=Path, default=DEFAULT_GEOMETRY_DIR)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--min-size", type=float, default=0.20, help="minimum mesh size in m")
-    parser.add_argument("--max-size", type=float, default=0.75, help="maximum mesh size in m")
+    parser.add_argument("--max-size", type=float, default=2.00, help="maximum mesh size in m")
     parser.add_argument(
         "--classification-angle", type=float, default=40.0,
         help="surface classification angle in degrees (default: 40)",
