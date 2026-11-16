@@ -1,0 +1,1 @@
+# modifies the openfoam dictionaries according to the configuration files.

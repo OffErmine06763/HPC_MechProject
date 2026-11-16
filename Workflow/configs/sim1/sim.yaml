@@ -1,0 +1,7 @@
+info:
+  name: first simulation
+  description: ""
+
+execution:
+  parallel: true
+  number_of_processors: 8

@@ -1,0 +1,1 @@
+# (maybe) converts the data from the openfoam output to the solid solver input.

@@ -1,0 +1,21 @@
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "fsi-workflow"
+version = "0.1.0"
+description = "Python workflow for OpenFOAM and structural solver orchestration"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "PyYAML>=6.0",
+    "pydantic",
+]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
