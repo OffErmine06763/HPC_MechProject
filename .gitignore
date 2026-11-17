@@ -7,6 +7,7 @@ Workflow/.pytest_cache/
 Workflow/.ruff_cache/
 Workflow/runs/*
 !Workflow/runs/.gitkeep
+Workflow/configs/scratch/
 
 FluidSolver/processor*/
 FluidSolver/[0-9]*.[0-9]*/
