@@ -8,8 +8,10 @@
 import argparse
 import logging
 import sys
+import shutil
 from pathlib import Path
 
+from workflow.environment import environment
 from workflow.config.config_loader import load_config
 from workflow.pipeline import run_pipeline
 
@@ -54,13 +56,32 @@ def setup_logging(verbose=False):
     )
 
 
+def create_output_directory() -> Path:
+    directory = environment.output_dir
+
+    # Delete all existing contents if the directory exists
+    if directory.exists():
+        if directory.is_dir():
+            for item in directory.iterdir():
+                if item.is_dir() and not item.is_symlink():
+                    shutil.rmtree(item)
+                else:
+                    item.unlink()
+        else:
+            raise NotADirectoryError(directory)
+
+    # Create the directory
+    directory.mkdir(parents=True, exist_ok=True)
+    return directory
+
+
 def main():
     """Main application entry point."""
 
+    environment.initialize()
     args = parse_arguments()
 
     setup_logging(True)
-
     logger = logging.getLogger(__name__)
 
     try:
@@ -73,7 +94,9 @@ def main():
             logger.info(f"Parallel execution on {config.sim.execution.effective_processors} processors")
 
         # Execute pipeline
-        run_pipeline(args.simulation, config=config, stage=args.stage)
+        environment.output_dir = environment.workflow_dir / Path("runs") / args.simulation
+        create_output_directory()
+        run_pipeline(config=config, stage=args.stage)
 
         logger.info("Workflow completed successfully!")
 
@@ -82,7 +105,7 @@ def main():
         sys.exit(130)
 
     except Exception as e:
-        logger.error("Workflow failed: %s", e)
+        logger.error("Workflow failed: %s", e, exc_info=e)
         # TODO: write to file the full trace
         sys.exit(1)
 

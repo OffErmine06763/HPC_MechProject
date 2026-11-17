@@ -8,11 +8,12 @@ from pathlib import Path
 
 from workflow.config.config import ExecutionConfig
 from workflow.utils.commands import get_read_dictionary_command, run_command
+from workflow.environment import environment
 
 
 
-def _get_application(case_directory: Path, output_directory: Path) -> str:
-    application_log = output_directory / "log.getApplication"
+def _get_application(case_directory: Path, log_directory: Path) -> str:
+    application_log = log_directory / "log.getApplication"
     _run_command(
         get_read_dictionary_command("application", "system/controlDict"),
         case_directory,
@@ -24,8 +25,10 @@ def _get_application(case_directory: Path, output_directory: Path) -> str:
     return application
 
 
-def _run_simulation(config: ExecutionConfig, case_directory: Path, log_directory: Path):
+def _run_simulation(config: ExecutionConfig, log_directory: Path):
     logger = logging.getLogger(__name__)
+
+    case_directory = environment.fluid_dir
     application = _get_application(case_directory, log_directory)
     
     commands: list[tuple[str, str]] = [
@@ -54,7 +57,7 @@ def _run_simulation(config: ExecutionConfig, case_directory: Path, log_directory
 def _move_results(output_directory: Path):
     """Moves the simulation outputs to the runs directory"""
 
-    states_src_dir = Path("../FluidSolver")
+    states_src_dir = environment.fluid_dir
     states_dst_dir = output_directory / "state"
     states_dst_dir.mkdir(parents=True, exist_ok=True)
 
@@ -64,7 +67,7 @@ def _move_results(output_directory: Path):
         if path.is_dir() and pattern.fullmatch(path.name):
             shutil.move(str(path), str(states_dst_dir / path.name))
 
-    postproc_src_dir = Path("../FluidSolver/postProcessing")
+    postproc_src_dir = environment.fluid_dir / "postProcessing"
     postproc_dst_dir = output_directory / "post_processing"
     postproc_dst_dir.mkdir(parents=True, exist_ok=True)
 
@@ -72,7 +75,7 @@ def _move_results(output_directory: Path):
         shutil.move(str(path), str(postproc_dst_dir / path.name))
 
 
-def run_fluid_simulation(config: ExecutionConfig, output_directory: Path):
+def run_fluid_simulation(config: ExecutionConfig):
     """
     Runs all the steps of the fluid simulation.
     Outputs are redirected to log files in the output directory.
@@ -84,15 +87,12 @@ def run_fluid_simulation(config: ExecutionConfig, output_directory: Path):
     """
 
     logger = logging.getLogger(__name__)
-    case_directory = _fluid_case_directory()
-    if not case_directory.is_dir():
-        raise FileNotFoundError(f"FluidSolver case directory does not exist: {case_directory}")
-    fluid_output_directory = output_directory / Path("fluid")
+    fluid_output_directory = environment.output_dir / Path("fluid")
+    log_directory          = environment.output_dir / Path("fluid/logs")
     fluid_output_directory.mkdir(parents=True, exist_ok=True)
-    log_directory = output_directory / Path("fluid/logs")
-    log_directory.mkdir(parents=True, exist_ok=True)
+    log_directory         .mkdir(parents=True, exist_ok=True)
 
-    _run_simulation(config, case_directory, log_directory)
+    _run_simulation(config, log_directory)
     _move_results(fluid_output_directory)
 
     logger.info("Fluid simulation completed successfully")
@@ -102,9 +102,9 @@ def run_fluid_simulation(config: ExecutionConfig, output_directory: Path):
 
 def clean_fluid_simulation():
     """Performs the equivalent of Allclean and remove other files managed by the workflow"""
-    # TODO: the fluid solver directory and Allclean path should be obtained in a better way
 
-    command = "../FluidSolver/Allclean"
+    command = environment.fluid_dir / "Allclean"
+    command = str(command)
     return_code = run_command(command)
     if return_code != 0:
         logger = logging.getLogger(__name__)
@@ -112,19 +112,13 @@ def clean_fluid_simulation():
         raise subprocess.CalledProcessError(return_code, command)
 
     # also remove the building geometry, since another simulation might use a different one
-    directory = Path("../FluidSolver/constant/triSurface")
+    directory = environment.fluid_dir / "constant/triSurface"
     for item in directory.iterdir():
         if item.is_dir() and not item.is_symlink():
             shutil.rmtree(item)
         else:
             item.unlink()
 
-
-
-def _fluid_case_directory() -> Path:
-    """Return the repository's OpenFOAM fluid case directory."""
-    # TODO: improve ts
-    return Path(__file__).resolve().parents[4] / "FluidSolver"
 
 
 def _run_command(command: str, case_directory: Path, log_file: Path) -> None:
