@@ -1,5 +1,6 @@
-Workflow/.venv/
-Workflow/__pycache__/
+__pycache__/
+.venv/
+
 Workflow/src/fsi_workflow.egg-info/
 Workflow/*.py[cod]
 Workflow/.pytest_cache/
@@ -13,3 +14,4 @@ FluidSolver/[0-9]/
 FluidSolver/log.*
 FluidSolver/postProcessing/
 FluidSolver/constant/polyMesh
+FluidSolver/constant/triSurface

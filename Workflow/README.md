@@ -1,4 +1,4 @@
-# Workflows
+# Workflow
 
 Code to automate execution of the simulation.
 

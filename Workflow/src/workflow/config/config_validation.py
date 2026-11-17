@@ -16,6 +16,11 @@ def validate_execution_config(config: ExecutionConfig) -> None:
     """
 
     # TODO: check that the bumber of processors is <= than the available processors
+    if config.parallelization == "manual":
+        if config.number_of_processors is None:
+            raise ValueError("number_of_processors must be specified for manual parallelization")
+    elif config.number_of_processors is not None:
+        raise ValueError("number_of_processors can only be specified for manual parallelization")
 
 
 def validate_fluid_config(config: FluidConfig) -> None:

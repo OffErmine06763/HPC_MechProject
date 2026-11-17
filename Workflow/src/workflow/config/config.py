@@ -1,7 +1,8 @@
 
 from __future__ import annotations
 from pydantic import BaseModel, Field, model_validator
-from typing import Self
+from typing import Self, Literal
+import os
 
 
 class WorkflowConfig(BaseModel):
@@ -33,14 +34,23 @@ class ExecutionConfig(BaseModel):
     """Generic execution-related parameters"""
     model_config = {"frozen": True}
     
-    parallel: bool = True
-    number_of_processors: int = Field(default=4, gt=0)
+    parallelization: Literal[ "serial", "automatic", "manual"] = "automatic"
+    number_of_processors: int | None = Field(default=None, gt=0)
 
     @model_validator(mode="after")
     def validate(self) -> Self:
         from workflow.config.config_validation import validate_execution_config
         validate_execution_config(self)
         return self
+
+    @property
+    def effective_processors(self) -> int:
+        if self.parallelization == "serial":
+            return 1
+        if self.parallelization == "automatic":
+            # TODO: this returns the logical cores, which makes mpi sad; we need the number of physical cores.
+            return os.cpu_count() or 1
+        return self.number_of_processors or 1
 
 
 class FluidConfig(BaseModel):

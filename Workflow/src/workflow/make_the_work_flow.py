@@ -69,11 +69,13 @@ def main():
         # Load and validate configuration
         config = load_config(args.simulation)
         logger.info("Loaded and validated \"%s\" workflow configuration", args.simulation)
+        if config.sim.execution.effective_processors != 1:
+            logger.info(f"Parallel execution on {config.sim.execution.effective_processors} processors")
 
         # Execute pipeline
-        run_pipeline(config=config, stage=args.stage)
+        run_pipeline(args.simulation, config=config, stage=args.stage)
 
-        logger.info("Workflow completed successfully")
+        logger.info("Workflow completed successfully!")
 
     except KeyboardInterrupt:
         logger.warning("Workflow interrupted by user")

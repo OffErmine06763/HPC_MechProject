@@ -3,5 +3,5 @@ info:
   description: ""
 
 execution:
-  parallel: true
-  number_of_processors: 8
+  parallelization: manual
+  number_of_processors: 4

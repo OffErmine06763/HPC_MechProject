@@ -30,7 +30,7 @@ def _read_yaml(path: Path) -> dict[str, Any]:
 
 
 
-def load_config(simulation_name: str | Path) -> WorkflowConfig:
+def load_config(simulation_name: Path) -> WorkflowConfig:
     """
     Load and validate the configuration files under `configs/<simulation_name>`.
 
