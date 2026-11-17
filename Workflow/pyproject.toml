@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "fsi-workflow"
+name = "workflow"
 version = "0.1.0"
 description = "Python workflow for OpenFOAM and structural solver orchestration"
 readme = "README.md"
@@ -17,5 +17,22 @@ dependencies = [
 ]
 
 
+[project.optional-dependencies]
+meshing = [
+    "gmsh",
+    "trimesh",
+    "networkx",
+]
+
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+
+[project.scripts]
+workflow-run = "workflow.make_the_work_flow:main"
+workflow-inspect = "workflow.scripts.inspect_results:main"
+workflow-clean = "workflow.scripts.clean:main"
+workflow-setup = "workflow.scripts.setup:main"
+workflow-meshing = "workflow.scripts.meshing:main"
+

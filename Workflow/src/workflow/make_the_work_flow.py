@@ -19,9 +19,7 @@ from workflow.pipeline import run_pipeline
 def parse_arguments():
     """Parse command-line arguments."""
 
-    parser = argparse.ArgumentParser(
-        description="OpenFOAM - Structural Solver Workflow"
-    )
+    parser = argparse.ArgumentParser(description="Tsunami (Work)flow") # yes they do
 
     parser.add_argument(
         "simulation",

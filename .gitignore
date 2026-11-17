@@ -1,13 +1,16 @@
 __pycache__/
 .venv/
+*.inp
+*.msh
 
-Workflow/src/fsi_workflow.egg-info/
+Workflow/src/workflow.egg-info/
 Workflow/*.py[cod]
 Workflow/.pytest_cache/
 Workflow/.ruff_cache/
 Workflow/runs/*
 !Workflow/runs/.gitkeep
 Workflow/configs/scratch/
+Workflow/geometry/meshes/
 
 FluidSolver/processor*/
 FluidSolver/[0-9]*.[0-9]*/

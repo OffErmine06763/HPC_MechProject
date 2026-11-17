@@ -4,3 +4,5 @@ The project is separated in three components
 - [Fluid Solver](FluidSolver)
 - [Solid Solver](SolidSolver)
 - [Workflow](Workflow)
+
+For the execution of the simulation see Workflow

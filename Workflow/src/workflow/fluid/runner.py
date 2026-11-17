@@ -57,6 +57,8 @@ def _run_simulation(config: ExecutionConfig, log_directory: Path):
 def _move_results(output_directory: Path):
     """Moves the simulation outputs to the runs directory"""
 
+    logger = logging.getLogger(__name__)
+
     states_src_dir = environment.fluid_dir
     states_dst_dir = output_directory / "state"
     states_dst_dir.mkdir(parents=True, exist_ok=True)
@@ -73,6 +75,8 @@ def _move_results(output_directory: Path):
 
     for path in postproc_src_dir.iterdir():
         shutil.move(str(path), str(postproc_dst_dir / path.name))
+
+    logger.info("Fluid simulation outputs moved")
 
 
 def run_fluid_simulation(config: ExecutionConfig):
@@ -93,6 +97,7 @@ def run_fluid_simulation(config: ExecutionConfig):
     log_directory         .mkdir(parents=True, exist_ok=True)
 
     _run_simulation(config, log_directory)
+    # TODO: the following should be done only if a flag is set in the config file
     _move_results(fluid_output_directory)
 
     logger.info("Fluid simulation completed successfully")
