@@ -30,9 +30,10 @@ where = ["src"]
 
 
 [project.scripts]
-workflow-run = "workflow.make_the_work_flow:main"
+workflow-run     = "workflow.make_the_work_flow:main"
 workflow-inspect = "workflow.scripts.inspect_results:main"
-workflow-clean = "workflow.scripts.clean:main"
-workflow-setup = "workflow.scripts.setup:main"
+workflow-clean   = "workflow.scripts.clean:main"
+workflow-setup   = "workflow.scripts.setup:main"
 workflow-meshing = "workflow.scripts.meshing:main"
+workflow-create  = "workflow.scripts.create_default_sim:main"
 

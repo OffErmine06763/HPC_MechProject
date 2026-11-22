@@ -1,0 +1,3 @@
+# Simulation Parameters
+
+TODO: detailed list of the parameters, default values, accepted values, optionality and so on...

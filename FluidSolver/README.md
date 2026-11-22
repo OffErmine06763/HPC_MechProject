@@ -2,17 +2,11 @@
 
 ## Execution
 
-First compile the custom function object (see later)
-
-    cd src/buildingLoadExtractor
-    wmake libso
-    cd ../..
-
-Then run the simulation
-
-    ./Allrun
+See [Workflow](../Workflow/).
 
 ## Current Simulation Setup
+
+**[DEPRECATED, left for reference while writing the Workflow README]**
 
 This section summarizes the current configuration of the OpenFOAM simulation, including the computational domain, mesh, boundary conditions, initial water distribution, and building geometry.
 

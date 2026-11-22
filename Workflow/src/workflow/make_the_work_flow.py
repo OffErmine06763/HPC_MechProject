@@ -8,12 +8,12 @@
 import argparse
 import logging
 import sys
-import shutil
 from pathlib import Path
 
 from workflow.environment import environment
 from workflow.config.config_loader import load_config
 from workflow.pipeline import run_pipeline
+from workflow.utils.utils import delete_path, setup_logging
 
 
 def parse_arguments():
@@ -38,35 +38,14 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def setup_logging(verbose=False):
-    """Configure application logging."""
 
-    level = logging.DEBUG if verbose else logging.INFO
-
-    logging.basicConfig(
-        level=level,
-        format="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
-        datefmt="%H:%M:%S",
-        handlers=[
-            logging.StreamHandler(sys.stdout)
-        ],
-        force=True
-    )
 
 
 def create_output_directory() -> Path:
     directory = environment.output_dir
 
     # Delete all existing contents if the directory exists
-    if directory.exists():
-        if directory.is_dir():
-            for item in directory.iterdir():
-                if item.is_dir() and not item.is_symlink():
-                    shutil.rmtree(item)
-                else:
-                    item.unlink()
-        else:
-            raise NotADirectoryError(directory)
+    delete_path(directory)
 
     # Create the directory
     directory.mkdir(parents=True, exist_ok=True)

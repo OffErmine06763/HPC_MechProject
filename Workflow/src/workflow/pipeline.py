@@ -1,6 +1,5 @@
 from pathlib import Path
 import logging
-import shutil
 
 from workflow.fluid.setup import prepare_case
 from workflow.fluid.runner import run_fluid_simulation, clean_fluid_simulation

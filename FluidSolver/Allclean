@@ -5,8 +5,4 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 cleanCase0
 
-cd src/buildingLoadExtractor
-wclean
-cd ../..
-
 #------------------------------------------------------------------------------

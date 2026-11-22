@@ -71,6 +71,8 @@ class SolidConfig(BaseModel):
     """Solid simulation parameters"""
     model_config = {"frozen": True}
 
+    tmp: float = 1
+
     @model_validator(mode="after")
     def validate(self) -> Self:
         from workflow.config.config_validation import validate_solid_config

@@ -1,4 +1,4 @@
-"""Loading workflow configuration files."""
+"""Loads workflow configuration files."""
 
 from pathlib import Path
 from typing import Any, Mapping

@@ -3,17 +3,11 @@
 from pathlib import Path
 import shlex
 import subprocess
+from typing import Literal
 
 
-def run_command(command: str, redirect_file: Path | None = None, working_directory: Path | None = None) -> int:
-    """Run *command*, redirecting stdout and stderr to ``redirect_file``.
-
-    Commands are intentionally strings because the OpenFOAM command builders
-    return shell-ready commands (including quoted dictionary values).  The
-    caller owns deciding whether a non-zero return code is an error.
-    """
-
-    if redirect_file is None:
+def run_command(command: str, redirect: Path | None | Literal["stdout"] = None, working_directory: Path | None = None, redirect_mode: Literal["overwrite", "append"] = "overwrite") -> int:
+    if redirect is None:
         result = subprocess.run(
             command,
             shell=True,
@@ -22,9 +16,9 @@ def run_command(command: str, redirect_file: Path | None = None, working_directo
             stderr=subprocess.DEVNULL,
             check=False,
         )
-    else:
-        redirect_file.parent.mkdir(parents=True, exist_ok=True)
-        with redirect_file.open("w", encoding="utf-8") as output:
+    elif isinstance(redirect, Path):
+        redirect.parent.mkdir(parents=True, exist_ok=True)
+        with redirect.open("w" if redirect_mode == "overwrite" else "a", encoding="utf-8") as output:
             result = subprocess.run(
                 command,
                 shell=True,
@@ -33,6 +27,14 @@ def run_command(command: str, redirect_file: Path | None = None, working_directo
                 stderr=subprocess.STDOUT,
                 check=False,
             )
+    else:
+        result = subprocess.run(
+            command,
+            shell=True,
+            cwd=working_directory,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
     return result.returncode
 
 

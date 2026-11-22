@@ -25,6 +25,7 @@ def _write_dictionaries(fluid_config: FluidConfig, execution_config: ExecutionCo
 def _move_files(fluid_config: FluidConfig, execution_config: ExecutionConfig):
     src = environment.workflow_dir / "geometry/for_fluid/building_separated.stl"
     dst = environment.fluid_dir / "constant/triSurface/building_separated.stl"
+    dst.parent.mkdir(exist_ok=True, parents=True)
     shutil.copy(src, dst)
 
 

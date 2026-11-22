@@ -11,6 +11,7 @@ Code to automate execution of the simulation.
     │   ├── for_meshing/          # building internal structure
     │   └── meshes/               # meshed internal structure
     ├── runs/                     # output of simulations
+    ├── logs/                     # additional logs not associated to a simulation
     │
     └── src/workflow/             # workflow code
         ├── make_the_work_flow.py # entry-point
@@ -52,9 +53,12 @@ To define a simulation run
 
     workflow-create <configuration path> 
 
-The given path will be the configuration path to use for the workflow execution. This will create a directory under `configs` with the specified name, filled with the `.yaml` files used to specify the parameters of the simulation.
+The given path will be the configuration path to use for the workflow execution. This will create a directory under `configs/` with the specified name, filled with the `.yaml` files used to specify the parameters of the simulation.
 
-TODO: detailed list of the parameters, default values, accepted values, optionality and so on...
+A config named `scratch` is gitignored.
+
+For a full list of the parameters exposed see "[docs/parameters](docs/parameters.md)".
+
 
 ## Inspecting the Output
 
@@ -74,45 +78,7 @@ If the configuration path is given, only the outputs associated to that run are 
 
 ## Meshes
 
-### Building Internal Geometry
-
-The building internal structure is created in Blender via a python script. Blender outputs stl files for each different type of structural components.
-
-**Usage in Blender**
-1. open blender
-2. click "scripting" in the menu above
-3. create a new file and paste the script
-
-When saving the building model, a directory /STL will be produced alongside the .blend file. It contains one .stl file per structural component type (column, facade, core...)
-
-### Meshing
-
-Move under `geometry/meshing_input/` the stl files produced by Blender. Those are meshed **togheter** using gmsh and converted to a file format accepted by CalculiX.
-
-AI explanation:  
-`meshing_1.py` builds a three-dimensional quadratic tetrahedral mesh from the STL files in `geometry/meshing_input/`. It uses Trimesh to split disconnected solids within each file, reconstructs every closed shell with the Gmsh API, and writes `geometry/meshes/building.inp` - a CalculiX/Abaqus input mesh with C3D10 elements.
-The stl filename becomes the CalculiX element-set name after its numeric prefix is removed. For example, `03_Columns.stl` produces `Columns`.
-
-Every input component must be a closed, watertight STL shell; the script stops with an explicit error if one is open. Components are meshed independently: this intentionally preserves the overlapping building parts produced by the Blender script (for example, columns penetrating slabs). A tied/contact definition is needed in CalculiX if those intersections must transfer load.
-
-**Requirements**
-
-Running the meshing requires gmsh (including the shared library it requires) the "meshing" optional dependencies:
-
-    sudo apt install libgmsh-dev
-    python -m pip install -e ".[meshing]"
-
-**Execution**
-
-    workflow-meshing --geometry-dir <geometry dir>
-
-This will mesh all the stl files under `geometry/for_meshing/<geometry dir>` and output `geometry/meshes/<geometry dir>.inp`
-
-Mesh size can be specified from command line:
-
-    workflow-meshing \
-        --min-size 0.20 --max-size 0.75 \
-        --geometry-name geo
+For info about meshing see "[docs/about_meshing](docs/about_meshing.md)".
 
 
 ## For Internal Use Only
@@ -132,11 +98,3 @@ Parameters to expose:
     - Building surface forces extraction parameters (patches, fields, write frequency)
 - Solid Simulation
     - Mesh
-
-Workflow Steps
-- Run pre-simulation for water initial condition
-    - move initial condition to fluid simulation
-- Run fluid simulation
-    - apply post-processing to the output timestamps
-    - move the fluid-structure interaction files to the solid solver
-- Run solid simulation

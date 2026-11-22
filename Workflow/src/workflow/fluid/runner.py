@@ -9,6 +9,7 @@ from pathlib import Path
 from workflow.config.config import ExecutionConfig
 from workflow.utils.commands import get_read_dictionary_command, run_command
 from workflow.environment import environment
+from workflow.utils.utils import delete_dir_content
 
 
 
@@ -118,11 +119,7 @@ def clean_fluid_simulation():
 
     # also remove the building geometry, since another simulation might use a different one
     directory = environment.fluid_dir / "constant/triSurface"
-    for item in directory.iterdir():
-        if item.is_dir() and not item.is_symlink():
-            shutil.rmtree(item)
-        else:
-            item.unlink()
+    delete_dir_content(directory)
 
 
 
