@@ -20,3 +20,5 @@ FluidSolver/log.*
 FluidSolver/postProcessing/
 FluidSolver/constant/polyMesh
 FluidSolver/constant/triSurface
+
+.vscode/
